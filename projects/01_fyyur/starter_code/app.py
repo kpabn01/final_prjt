@@ -131,14 +131,15 @@ def venues():
   sql2 = 'SELECT count(*) FROM "Venue" WHERE "Venue".id = id;'
   #db.session.execute(sql)
   query = db.session.query(Venue).all()
-  cnt2 = query.cout()
+  cnt2 = len(query)
   cnt = db.session.execute(sql2)
-  print(cnt, cnt2)
-  '''for n in count:
+  print(cnt2)
+  '''for n in cnt2:
     venue = venues[n]
     print(venue)'''
-  #venue = Venue[0]
-  #v1 = Venue.query.filter_by(city=city).order_by('state').all()
+
+  #data2 = 
+
 
   data=[{
     "city": "San Francisco",
