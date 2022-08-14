@@ -93,7 +93,7 @@ class Artist(db.Model):
 
     
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
-# PLEASE SEE LINE 10
+# IMPLEMENTED BEFORE THE VENUE MODEL/TABLE
 
 
 #----------------------------------------------------------------------------#
