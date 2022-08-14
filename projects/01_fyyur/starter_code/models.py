@@ -1,5 +1,7 @@
-from app import db
-from sqlalchemy.dialects.postgresql import JSON
+#from app import app as app # or "from __main__ import app"
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
 
 #----------------------------------------------------------------------------#
 # Models.
@@ -33,8 +35,9 @@ class Venue(db.Model):
     artists = db.relationship("Artist", secondary=shows, lazy='subquery', backref=db.backref('Venue', lazy=True))
 
     def __repr__(self):
-      return "<Venue(id='%d', name='%s', city='%s', state='%s', address='%s', phone='%s')>" % (
-              self.id, self.name, self.city, self.state, self.address, self.phone)
+      return f"Venue <id: {'%d'}, name: {'%s'}, city: {'%s'}, state: {'%s'}, address: {'%s'}, phone: {'%s'}, image_link: {'%s'}, facebook_link: {'%s'}, genres: {'%s'}, web_link: {'%s'}, looking_for_talent: {'%r'}, seeking_description: {'%s'}>"% (
+        self.id, self.name, self.city, self.state, self.address, self.phone, self.image_link,
+        self.facebook_link, self.genres, self.web_link, self.looking_for_talent, self.seeking_description)
 
 
 class Artist(db.Model):
@@ -56,9 +59,10 @@ class Artist(db.Model):
 
 
     def __repr__(self):
-      return "<Artist(id='%d', name='%s', city='%s', state='%s', phone='%s', genres='%s')>" % (
-            self.id, self.name, self.city, self.state, self.phone, self.genres)
+      return f"Artist <id: {'%d'}, name: {'%s'}, city: {'%s'}, state: {'%s'}, phone: {'%s'}, genres: {'%s'}, image_link: {'%s'}, facebook_link: {'%s'}, web_link: {'%s'}, looking_for_talent: {'%r'}, seeking_description: {'%s'}>"% (
+        self.id, self.name, self.city, self.state, self.phone, self.genres, self.image_link,
+        self.facebook_link, self.web_link, self.looking_for_talent, self.seeking_description)
 
     
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
-# PLEASE SEE LINE 10
+# IMPLEMENTED BEFORE THE VENUE MODEL/TABLE
