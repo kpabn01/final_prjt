@@ -10,4 +10,7 @@ DEBUG = True
 
 
 # TODO IMPLEMENT DATABASE URL
-SQLALCHEMY_DATABASE_URI = '<Put your local database url>'
+SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:Just!casual,22@localhost:5432/fyyurapp'
+
+# SUPPRESS THE WARNING IN THE CONSOLE
+SQLALCHEMY_TRACK_MODIFICATIONS = False

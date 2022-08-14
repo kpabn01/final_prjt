@@ -2,6 +2,7 @@
 # Imports
 #----------------------------------------------------------------------------#
 
+from email.policy import default
 import json
 import dateutil.parser
 import babel
@@ -12,6 +13,10 @@ import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
 from forms import *
+from flask_migrate import Migrate
+from sqlalchemy.sql import func
+#from models import Artist, Venue, shows
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -20,12 +25,23 @@ app = Flask(__name__)
 moment = Moment(app)
 app.config.from_object('config')
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
+#from . import models
 # TODO: connect to a local postgresql database
+# DONE IN confi.py FILE
 
 #----------------------------------------------------------------------------#
 # Models.
 #----------------------------------------------------------------------------#
+
+# I HAVE TO DECLARE THE ASSOCIATION TABLE FIRST TO BE ABLE TO USE THE VARIABLE IN THE OTHER TABLES
+shows = db.Table('Show',
+    db.Column('Artist_id', db.ForeignKey('Artist.id'), primary_key=True),
+    db.Column("Venue_id", db.ForeignKey('Venue.id'), primary_key=True),
+    db.Column('start_time', db.DateTime(), nullable=False)
+)
+
 
 class Venue(db.Model):
     __tablename__ = 'Venue'
@@ -40,6 +56,17 @@ class Venue(db.Model):
     facebook_link = db.Column(db.String(120))
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
+    genres = db.Column(db.String(120))
+    web_link = db.Column(db.String(120))
+    looking_for_talent = db.Column(db.Boolean, default=False)
+    seeking_description = db.Column(db.String(500))
+    artists = db.relationship("Artist", secondary=shows, lazy='subquery', backref=db.backref('Venue', lazy=True))
+
+    def __repr__(self):
+      return f"Venue <id: {'%d'}, name: {'%s'}, city: {'%s'}, state: {'%s'}, address: {'%s'}, phone: {'%s'}, image_link: {'%s'}, facebook_link: {'%s'}, genres: {'%s'}, web_link: {'%s'}, looking_for_talent: {'%r'}, seeking_description: {'%s'}>"% (
+        self.id, self.name, self.city, self.state, self.address, self.phone, self.image_link,
+        self.facebook_link, self.genres, self.web_link, self.looking_for_talent, self.seeking_description)
+
 
 class Artist(db.Model):
     __tablename__ = 'Artist'
@@ -54,8 +81,20 @@ class Artist(db.Model):
     facebook_link = db.Column(db.String(120))
 
     # TODO: implement any missing fields, as a database migration using Flask-Migrate
+    web_link = db.Column(db.String(120))
+    looking_for_talent = db.Column(db.Boolean, default=False)
+    seeking_description = db.Column(db.String(500))
 
+
+    def __repr__(self):
+      return f"Artist <id: {'%d'}, name: {'%s'}, city: {'%s'}, state: {'%s'}, phone: {'%s'}, genres: {'%s'}, image_link: {'%s'}, facebook_link: {'%s'}, web_link: {'%s'}, looking_for_talent: {'%r'}, seeking_description: {'%s'}>"% (
+        self.id, self.name, self.city, self.state, self.phone, self.genres, self.image_link,
+        self.facebook_link, self.web_link, self.looking_for_talent, self.seeking_description)
+
+    
 # TODO Implement Show and Artist models, and complete all model relationships and properties, as a database migration.
+# PLEASE SEE LINE 10
+
 
 #----------------------------------------------------------------------------#
 # Filters.
@@ -87,6 +126,20 @@ def index():
 def venues():
   # TODO: replace with real venues data.
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
+  #db.session.bind.execute(<YOUR-SQL-STATEMENT>)
+  sql ='SELECT id,name,state,city from "Venue";'
+  sql2 = 'SELECT count(*) FROM "Venue" WHERE "Venue".id = id;'
+  #db.session.execute(sql)
+  query = db.session.query(Venue).all()
+  cnt2 = query.cout()
+  cnt = db.session.execute(sql2)
+  print(cnt, cnt2)
+  '''for n in count:
+    venue = venues[n]
+    print(venue)'''
+  #venue = Venue[0]
+  #v1 = Venue.query.filter_by(city=city).order_by('state').all()
+
   data=[{
     "city": "San Francisco",
     "state": "CA",
@@ -509,8 +562,10 @@ if not app.debug:
 # Launch.
 #----------------------------------------------------------------------------#
 
+
 # Default port:
 if __name__ == '__main__':
+    #manager.run()
     app.run()
 
 # Or specify port manually:
