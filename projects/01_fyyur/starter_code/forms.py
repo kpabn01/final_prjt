@@ -1,3 +1,4 @@
+from codecs import unicode_escape_encode
 from datetime import datetime
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
@@ -111,7 +112,7 @@ class VenueForm(Form):
             ('Rock n Roll', 'Rock n Roll'),
             ('Soul', 'Soul'),
             ('Other', 'Other'),
-        ]
+        ], coerce=unicode_escape_encode, option_widget=None
     )
     facebook_link = StringField(
         'facebook_link', validators=[URL()]
@@ -199,6 +200,7 @@ class ArtistForm(Form):
         'image_link'
     )
     genres = SelectMultipleField(
+        # TODO implement enum restriction
         'genres', validators=[DataRequired()],
         choices=[
             ('Alternative', 'Alternative'),
@@ -220,10 +222,9 @@ class ArtistForm(Form):
             ('Rock n Roll', 'Rock n Roll'),
             ('Soul', 'Soul'),
             ('Other', 'Other'),
-        ]
+        ], coerce=unicode_escape_encode, option_widget=None
      )
     facebook_link = StringField(
-        # TODO implement enum restriction
         'facebook_link', validators=[URL()]
      )
 
