@@ -76,9 +76,9 @@
 </section>
 
 <a href="/venues/{{ venue.id }}/edit"><button class="btn btn-primary btn-lg">Edit</button></a>
-<button class="btn btn-primary btn-lg">
+<a href="/venues/{{ venue.id }}"><button class="btn btn-primary btn-lg">
 	Delete
-</button>
+</button></a>
 <script>
 	deleteVenue = document.querySelectorAll("venue.id");
 	  for (let i = 0; i < deleteBtns.length; i++) {
