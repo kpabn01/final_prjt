@@ -39,7 +39,6 @@ class Venue(db.Model):
     seeking_description = db.Column(db.String(500))
     shows = db.relationship(Show, backref='venue', lazy=True)
 
-
     def __repr__(self):
       return f"Venue <id: {'%d'}, name: {'%s'}, city: {'%s'}, state: {'%s'}, address: {'%s'}, phone: {'%s'}, image_link: {'%s'}, facebook_link: {'%s'}, genres: {'%s'}, web_link: {'%s'}, seeking_talent: {'%r'}, seeking_description: {'%s'}>"% (
         self.id, self.name, self.city, self.state, self.address, self.phone, self.image_link,
@@ -63,7 +62,6 @@ class Artist(db.Model):
     seeking_venue = db.Column(db.Boolean, default=False)
     seeking_description = db.Column(db.String(500))
     shows = db.relationship(Show, backref='artist', lazy=True)
-
 
     def __repr__(self):
       return f"Artist <id: {'%d'}, name: {'%s'}, city: {'%s'}, state: {'%s'}, phone: {'%s'}, genres: {'%s'}, image_link: {'%s'}, facebook_link: {'%s'}, web_link: {'%s'}, seeking_talent: {'%r'}, seeking_description: {'%s'}>"% (

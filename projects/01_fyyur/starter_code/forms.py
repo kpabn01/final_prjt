@@ -4,6 +4,7 @@ from flask_wtf import Form
 from wtforms import StringField, SelectField, SelectMultipleField, DateTimeField, BooleanField
 from wtforms.validators import DataRequired, AnyOf, URL
 
+
 class ShowForm(Form):
     artist_id = StringField(
         'artist_id'
@@ -16,6 +17,7 @@ class ShowForm(Form):
         validators=[DataRequired()],
         default= datetime.today()
     )
+
 
 class VenueForm(Form):
     name = StringField(
@@ -112,7 +114,7 @@ class VenueForm(Form):
             ('Rock n Roll', 'Rock n Roll'),
             ('Soul', 'Soul'),
             ('Other', 'Other'),
-        ], coerce=unicode_escape_encode, option_widget=None
+        ], #coerce=unicode_escape_encode, option_widget=None
     )
     facebook_link = StringField(
         'facebook_link', validators=[URL()]
@@ -222,7 +224,7 @@ class ArtistForm(Form):
             ('Rock n Roll', 'Rock n Roll'),
             ('Soul', 'Soul'),
             ('Other', 'Other'),
-        ], coerce=unicode_escape_encode, option_widget=None
+        ], #coerce=unicode_escape_encode, option_widget=None
      )
     facebook_link = StringField(
         'facebook_link', validators=[URL()]
