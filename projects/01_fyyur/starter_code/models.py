@@ -10,6 +10,7 @@ db = SQLAlchemy()
 class Show(db.Model):
     __tablename__ = 'Show'
 
+    # Put after the FK constratraints: onupdate="CASCADE", ondelete="CASCADE" or "SET NULL" for artist_id and venue_id
     id = db.Column(db.Integer, primary_key=True)
     artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
     venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), nullable=False)
