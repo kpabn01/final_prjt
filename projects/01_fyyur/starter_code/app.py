@@ -64,26 +64,49 @@ def index():
 def venues():
   # TODO: replace with real venues data.
   #       num_upcoming_shows should be aggregated based on number of upcoming shows per venue.
-  #data1 = []
-  #data2 = []
-
+  data1 = []
+  data2 = []
+  data3 = []
+  data_ok = []
   upcoming_shows_query = db.session.query(Show).join(Venue).filter(Show.artist_id==Venue.id).filter(Show.start_time>datetime.now()).all()
   num_upcoming_shows = [len(upcoming_shows_query)]
 
-  data_ok = []
   result = Venue.query.all()
   taille = int(len(result))
   for n in range(taille):
     venue = result[n]
-    data_ok.append({
+    data1.append({
       "city": venue.city,
       "state": venue.state,
-      "venues": [{
+      "venue": {
         "id": venue.id,
         "name": venue.name,
         "num_upcoming_shows": num_upcoming_shows,
-      }]
+      }
     })
+    data2.append({
+      "city": venue.city,
+      "state": venue.state,
+    })
+  for v_s in data2:
+    if v_s in data3:
+      pass
+    else:
+      data3.append(v_s)
+  for vs in data3:
+    vs["venues"] = []
+    data_ok.append(vs)
+  i = 0
+  while i < len(data_ok):
+    if i==len(data_ok):
+      break
+    else:
+      for v in data1:
+        if {"city": v["city"], "state": v["state"]} == {"city": data_ok[i]["city"], "state": data_ok[i]["state"]}:
+          data_ok[i]["venues"].append(v["venue"])
+        else:
+          pass
+      i+=1
 
   # MOCK DATA
   data=[{
