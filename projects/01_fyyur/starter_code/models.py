@@ -13,7 +13,7 @@ class Show(db.Model):
     # Put after the FK constratraints: onupdate="CASCADE", ondelete="CASCADE" or "SET NULL" for artist_id and venue_id
     id = db.Column(db.Integer, primary_key=True)
     artist_id = db.Column(db.Integer, db.ForeignKey('Artist.id'), nullable=False)
-    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id'), nullable=False)
+    venue_id = db.Column(db.Integer, db.ForeignKey('Venue.id', onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     start_time = db.Column(db.DateTime())
 
     def __repr__(self):
